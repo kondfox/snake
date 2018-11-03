@@ -1,0 +1,22 @@
+{
+  "name": "snake",
+  "version": "1.0.0",
+  "description": "Practice Snake Game Project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kondfox/snake.git"
+  },
+  "author": "kondfox",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kondfox/snake/issues"
+  },
+  "homepage": "https://github.com/kondfox/snake#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
