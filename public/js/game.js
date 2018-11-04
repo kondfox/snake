@@ -1,18 +1,22 @@
 'use strict';
-import { snakePiece } from './settings.js';
+import { canvas, snakePieceBodySize, snakePieceSize, game } from './settings.js';
+import { initSnake, changeDirection, move } from './snake.js';
 
-const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-let x = 0;
+let snake = initSnake(game.startX, game.startY, game.snakeSize, game.startDirection);
 
-function render() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillRect(x % canvas.width, 0, snakePiece.bodySize, snakePiece.bodySize);
-    x += 2 * snakePiece.offset + snakePiece.bodySize;
-    window.setTimeout(render, 200);
+document.addEventListener('keydown', (event) => {
+  snake = changeDirection(snake, event.key);
+});
+
+const render = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  snake.pieces.forEach(piece => 
+    ctx.fillRect(snakePieceSize * piece.x, snakePieceSize * piece.y, snakePieceBodySize, snakePieceBodySize)
+  );
+  snake = move(snake);
+  window.setTimeout(render, game.speed);
 };
 
-render();
-
-  
+render(); 
