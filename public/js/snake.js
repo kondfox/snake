@@ -1,28 +1,27 @@
 'use strict';
-import { SnakePiece, nextDirection, movePiece } from './snake-piece.js';
-
-function Snake(pieces) {
-  this.pieces = pieces;
-  this.head = this.pieces[pieces.length - 1];
-  this.body = this.pieces.slice(0, pieces.length - 1);
-}
+import { initPiece } from './snake-piece.js';
 
 const initSnake = (x, y, size, dir) => {
-  const pieces = new Array(size)
+  let pieces = new Array(size)
     .fill()
-    .map(piece => new SnakePiece(x++, y, dir));
-  return new Snake(pieces);
+    .map(piece => initPiece(size - 1 - x--, y, dir));
+  let [head, ...body] = pieces;
+
+  const changeDirection = (newDirection) => {
+    head.changeDirection(newDirection);
+  };
+  
+  const move = () => {
+    pieces.forEach(piece => piece.movePiece());
+    body.slice().reverse()
+      .forEach((piece, i) => piece.changeDirection(pieces[pieces.length - 2 - i].getDirection()));
+  };
+
+  const render = (renderMethod) => {
+    pieces.forEach(piece => piece.render(renderMethod));
+  };
+
+  return { changeDirection, move, render };
 };
 
-const changeDirection = (snake, newDirection) => {
-  return new Snake(snake.body.concat([new SnakePiece(snake.head.x, snake.head.y, newDirection)]));
-};
-
-const move = (snake) => {
-  return new Snake(snake.pieces
-    .map(piece => movePiece(piece))
-    .map((piece, i) => i < snake.pieces.length - 1 ? nextDirection(piece, snake.pieces[i + 1].direction) : piece)
-  );
-};
-
-export { Snake, initSnake, changeDirection, move };
+export { initSnake };

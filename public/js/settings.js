@@ -6,13 +6,13 @@ const snakePieceOffset = 2;
 const snakePieceSize = 2 * snakePieceOffset + snakePieceBodySize;
 
 const game = {
-  speed: 100,
-  snakeSize: 100,
-  startX: 0,
-  startY: 0,
+  speed: 300,
+  snakeSize: 5,
+  startX: 10,
+  startY: 10,
   maxX: canvas.width / snakePieceSize,
   maxY: canvas.height / snakePieceSize,
-  startDirection: 'ArrowRight',
+  startDirection: 'ArrowLeft',
 };
 
 export { canvas, snakePieceBodySize, snakePieceSize, game };

@@ -2,30 +2,38 @@
 
 import { game } from './settings.js';
 
-function SnakePiece(x, y, direction) {
-  this.x = x >= 0 ? x % game.maxX : game.maxX + (x % game.maxX);
-  this.y = y >= 0 ? y % game.maxY : game.maxY + (y % game.maxY);
-  this.direction = direction;
+const validateCoordinate = (c, max) => {
+  return c >= 0 ? c % max : max + (c % max);
 };
 
-const nextDirection = (snakePiece, newDirection) => {
-  return new SnakePiece(snakePiece.x, snakePiece.y, newDirection);
+const initPiece = (x, y, direction) => {
+  x = validateCoordinate(x, game.maxX);
+  y = validateCoordinate(y, game.maxY);
+
+  const directionModifier = {
+    'ArrowUp': () => y = validateCoordinate(y - 1, game.maxY),
+    'ArrowDown': () => y = validateCoordinate(y + 1, game.maxY),
+    'ArrowLeft': () => x = validateCoordinate(x - 1, game.maxX),
+    'ArrowRight': () => x = validateCoordinate(x + 1, game.maxX),
+  };
+
+  const changeDirection = (newDirection) => {
+    direction = newDirection;
+  };
+
+  const movePiece = () => {
+    directionModifier[direction].apply();
+  };
+
+  const getDirection = () => {
+    return direction;
+  };
+
+  const render = (renderMethod) => {
+    renderMethod(x, y);
+  };
+
+  return { changeDirection, movePiece, getDirection, render }
 };
 
-const movePiece = (piece) => {
-  
-  switch (piece.direction) {
-    case 'ArrowUp':
-      return new SnakePiece(piece.x, piece.y - 1, piece.direction);
-    case 'ArrowDown':
-      return new SnakePiece(piece.x, piece.y + 1, piece.direction);
-    case 'ArrowLeft':
-      return new SnakePiece(piece.x - 1, piece.y, piece.direction);
-    case 'ArrowRight':
-      return new SnakePiece(piece.x + 1, piece.y, piece.direction);
-    default:
-      return piece;
-  }
-};
-
-export { SnakePiece, nextDirection, movePiece };
+export { initPiece };
